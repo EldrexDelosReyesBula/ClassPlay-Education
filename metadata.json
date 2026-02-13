@@ -1,0 +1,7 @@
+{
+  "name": "ClassPlay Game",
+  "description": "A premium educational game store interface designed for teachers to find classroom activities.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
