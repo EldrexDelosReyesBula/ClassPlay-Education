@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 
-const GENRES = ["Sci-Fi", "Fantasy", "Mystery", "Adventure", "Comedy"];
-const CHARACTERS = ["A robot", "A wizard", "A detective", "A talking cat", "An astronaut"];
-const SETTINGS = ["on Mars", "in a castle", "underwater", "in a forest", "at school"];
-const PLOTS = ["finds a map", "loses a key", "meets a stranger", "discovers a secret", "saves the day"];
+const GENRES = ["Sci-Fi", "Fantasy", "Mystery", "Adventure", "Comedy", "Horror", "Fairy Tale", "Historical", "Superhero"];
+const CHARACTERS = ["A robot", "A wizard", "A detective", "A talking cat", "An astronaut", "A knight", "A chef", "A ghost", "A dinosaur", "A teacher"];
+const SETTINGS = ["on Mars", "in a castle", "underwater", "in a forest", "at school", "in a haunted house", "in the future", "on a pirate ship"];
+const PLOTS = ["finds a map", "loses a key", "meets a stranger", "discovers a secret", "saves the day", "travels back in time", "switches bodies", "finds a magical object"];
 
 export const StoryPrompter: React.FC = () => {
   const [prompt, setPrompt] = useState<{g:string, c:string, s:string, p:string} | null>(null);
