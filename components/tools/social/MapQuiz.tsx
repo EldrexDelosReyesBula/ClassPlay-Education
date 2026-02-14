@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 const QUESTIONS = [
@@ -5,6 +6,10 @@ const QUESTIONS = [
   { q: "Continent with the Amazon?", a: "South America", opts: ["Africa", "South America", "Asia"] },
   { q: "Which is an Ocean?", a: "Pacific", opts: ["Pacific", "Sahara", "Amazon"] },
   { q: "Continent containing France?", a: "Europe", opts: ["Asia", "Europe", "North America"] },
+  { q: "Smallest Continent?", a: "Australia", opts: ["Europe", "Antarctica", "Australia"] },
+  { q: "Longest River?", a: "Nile", opts: ["Nile", "Amazon", "Mississippi"] },
+  { q: "Which is not a country?", a: "Africa", opts: ["Egypt", "Kenya", "Africa"] },
+  { q: "Capital of Japan?", a: "Tokyo", opts: ["Kyoto", "Osaka", "Tokyo"] }
 ];
 
 export const MapQuiz: React.FC = () => {
