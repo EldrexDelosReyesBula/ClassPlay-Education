@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 const ORGANS = [
@@ -5,6 +6,10 @@ const ORGANS = [
   { id: 'heart', name: 'Heart', func: 'Pumps blood', color: 'bg-red-500' },
   { id: 'lungs', name: 'Lungs', func: 'Breathing air', color: 'bg-blue-300' },
   { id: 'stomach', name: 'Stomach', func: 'Digests food', color: 'bg-orange-300' },
+  { id: 'liver', name: 'Liver', func: 'Cleans blood & aids digestion', color: 'bg-red-800' },
+  { id: 'kidneys', name: 'Kidneys', func: 'Filters waste from blood', color: 'bg-purple-400' },
+  { id: 'skeleton', name: 'Skeleton', func: 'Structure and protection', color: 'bg-slate-200' },
+  { id: 'intestines', name: 'Intestines', func: 'Absorbs nutrients', color: 'bg-pink-400' }
 ];
 
 export const HumanBody: React.FC = () => {
@@ -24,7 +29,8 @@ export const HumanBody: React.FC = () => {
           <span className="material-symbols-outlined text-8xl text-white opacity-80">
             {ORGANS[current].id === 'brain' ? 'psychology' : 
              ORGANS[current].id === 'heart' ? 'favorite' :
-             ORGANS[current].id === 'lungs' ? 'air' : 'water_drop'}
+             ORGANS[current].id === 'lungs' ? 'air' : 
+             ORGANS[current].id === 'skeleton' ? 'accessibility' : 'water_drop'}
           </span>
        </div>
 
