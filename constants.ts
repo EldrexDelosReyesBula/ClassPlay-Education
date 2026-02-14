@@ -482,6 +482,20 @@ export const GAMES: Game[] = [
     metaText: "Random"
   },
   {
+    id: "pebble-toss",
+    title: "Pebble Toss",
+    subtitle: "Yes/No",
+    description: "Toss a pebble into the pond to get a random answer.",
+    icon: "water_drop",
+    iconColorClass: "text-cyan-500",
+    gradientFrom: "from-cyan-500/10",
+    isPremium: false,
+    category: "Decision",
+    categoryColorClass: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
+    metaIcon: "waves",
+    metaText: "Yes/No"
+  },
+  {
     id: "mystery-box",
     title: "Mystery Box",
     subtitle: "Rewards",
