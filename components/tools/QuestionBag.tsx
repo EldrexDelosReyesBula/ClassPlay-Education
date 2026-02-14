@@ -1,9 +1,11 @@
+
 import React, { useState } from 'react';
 
 export const QuestionBag: React.FC = () => {
     const [questions, setQuestions] = useState<string[]>([]);
     const [input, setInput] = useState("");
     const [drawn, setDrawn] = useState<string | null>(null);
+    const [projectorMode, setProjectorMode] = useState(false);
 
     const add = () => {
         if(input.trim()) {
@@ -26,7 +28,15 @@ export const QuestionBag: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-full w-full max-w-4xl mx-auto p-4">
+        <div className="flex flex-col h-full w-full max-w-4xl mx-auto p-4 relative">
+            
+            {projectorMode && (
+               <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center p-12 text-center cursor-pointer" onClick={() => setProjectorMode(false)}>
+                   <button className="absolute top-4 right-4 text-white/50 hover:text-white"><span className="material-symbols-outlined text-4xl">close</span></button>
+                   <h1 className="text-6xl md:text-8xl font-black text-white leading-tight">{drawn || "Waiting to draw..."}</h1>
+               </div>
+            )}
+
             <div className="flex flex-col md:flex-row gap-8 h-full">
                 {/* Input Side */}
                 <div className="w-full md:w-1/3 bg-white dark:bg-[#111c22] rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-[#233c48] flex flex-col h-1/2 md:h-full">
@@ -59,10 +69,13 @@ export const QuestionBag: React.FC = () => {
                 {/* Draw Side */}
                 <div className="flex-1 flex flex-col items-center justify-center relative min-h-[300px]">
                     {drawn && (
-                         <div className="absolute top-0 left-0 right-0 text-center animate-[popIn_0.3s] z-10">
+                         <div className="absolute top-0 left-0 right-0 text-center animate-[popIn_0.3s] z-10 flex flex-col items-center">
                              <div className="bg-white dark:bg-[#111c22] p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-amber-500 inline-block max-w-md mx-4">
                                  <h2 className="text-xl md:text-2xl font-bold dark:text-white">{drawn}</h2>
                              </div>
+                             <button onClick={() => setProjectorMode(true)} className="mt-4 text-slate-500 hover:text-primary font-bold flex items-center gap-1 bg-white/50 px-3 py-1 rounded-full">
+                                 <span className="material-symbols-outlined">tv</span> Projector Mode
+                             </button>
                          </div>
                     )}
                     

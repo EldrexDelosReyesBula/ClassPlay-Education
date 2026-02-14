@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { ClassGroup } from '../../types';
 import { getClasses } from '../../utils/db';
@@ -181,6 +182,7 @@ export const WheelSpin: React.FC = () => {
           value={selectedClassId}
           onChange={(e) => setSelectedClassId(e.target.value)}
           className="bg-white dark:bg-[#1a2b34] border border-slate-200 dark:border-[#233c48] rounded-xl px-4 py-2 font-bold flex-1"
+          aria-label="Select Class for Wheel"
         >
           {classes.length === 0 && <option>Demo Mode</option>}
           {classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -204,6 +206,8 @@ export const WheelSpin: React.FC = () => {
           height={400} 
           className="max-w-full h-auto cursor-pointer"
           onClick={spin}
+          role="img"
+          aria-label={`Spinning wheel with options: ${currentItems.join(', ')}`}
         />
         <canvas 
             ref={confettiRef}
@@ -214,7 +218,7 @@ export const WheelSpin: React.FC = () => {
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="bg-white/95 dark:bg-black/80 backdrop-blur px-8 py-6 rounded-2xl shadow-2xl transform animate-[popIn_0.4s_ease-out] border-4 border-pink-500 text-center">
               <div className="text-sm text-slate-500 uppercase font-bold mb-1">Winner</div>
-              <h3 className="text-4xl font-black text-slate-900 dark:text-white">{winner}</h3>
+              <h3 role="alert" className="text-4xl font-black text-slate-900 dark:text-white">{winner}</h3>
               {autoRemove && <p className="text-xs text-red-400 mt-2 font-bold animate-pulse">Removing...</p>}
             </div>
           </div>
@@ -224,7 +228,7 @@ export const WheelSpin: React.FC = () => {
       <button 
         onClick={spin} 
         disabled={isSpinning || currentItems.length === 0}
-        className="mt-8 px-12 py-4 bg-pink-500 text-white font-black text-xl rounded-2xl shadow-lg hover:bg-pink-600 disabled:opacity-50 active:scale-95 transition-all"
+        className="mt-8 px-12 py-4 bg-pink-500 text-white font-black text-xl rounded-2xl shadow-lg hover:bg-pink-600 disabled:opacity-50 active:scale-95 transition-all focus:outline-none focus:ring-4 focus:ring-pink-400"
       >
         {isSpinning ? 'Spinning...' : 'SPIN'}
       </button>

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 export const DiceRoll: React.FC = () => {
@@ -64,6 +65,8 @@ export const DiceRoll: React.FC = () => {
             grid grid-cols-3 grid-rows-3 p-6 transition-transform duration-100
             ${isRolling ? 'animate-[shake_0.5s_infinite]' : 'transform hover:scale-105'}
           `}
+          role="img"
+          aria-label={`Dice showing ${result}`}
         >
           {renderDots(result)}
         </div>

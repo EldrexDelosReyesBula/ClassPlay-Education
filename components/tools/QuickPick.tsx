@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { ClassGroup, Student } from '../../types';
 import { getClasses } from '../../utils/db';
@@ -77,7 +78,7 @@ export const QuickPick: React.FC = () => {
 
   if (classes.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center p-8">
+      <div className="flex flex-col items-center justify-center min-h-full text-center p-8">
         <span className="material-symbols-outlined text-6xl text-slate-300 mb-4">group_off</span>
         <h3 className="text-xl font-bold dark:text-white mb-2">No Classes Found</h3>
         <p className="text-slate-500 mb-6">Create a class list in the sidebar to use Quick Pick.</p>
@@ -86,7 +87,7 @@ export const QuickPick: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
+    <div className="flex flex-col min-h-full max-w-4xl mx-auto w-full">
       <div role="status" aria-live="polite" className="sr-only">{announcement}</div>
 
       {/* Controls */}
@@ -114,7 +115,7 @@ export const QuickPick: React.FC = () => {
         <div className="flex gap-2">
           <button 
             onClick={resetHistory}
-            className="px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 dark:text-[#92b7c9] dark:hover:text-white transition-colors"
+            className="px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 dark:text-[#92b7c9] dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 rounded-xl"
           >
             Reset
           </button>

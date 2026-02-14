@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
 
-const REWARDS = [
+import React, { useState, useEffect } from 'react';
+import { saveToolState, getToolState } from '../../utils/db';
+
+const TOOL_ID = 'mystery_box_rewards';
+const DEFAULT_REWARDS = [
   "No Homework Pass",
   "Sit Next to a Friend",
   "DJ for 5 Minutes",
@@ -17,6 +20,19 @@ export const MysteryBox: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [reward, setReward] = useState("");
   const [isShaking, setIsShaking] = useState(false);
+  const [rewards, setRewards] = useState<string[]>(DEFAULT_REWARDS);
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+      getToolState(TOOL_ID).then(data => {
+          if(data && data.rewards) setRewards(data.rewards);
+      });
+  }, []);
+
+  const saveRewards = (newR: string[]) => {
+      setRewards(newR);
+      saveToolState(TOOL_ID, { rewards: newR });
+  };
 
   const openBox = () => {
     if (isOpen) {
@@ -28,12 +44,42 @@ export const MysteryBox: React.FC = () => {
     setTimeout(() => {
       setIsShaking(false);
       setIsOpen(true);
-      setReward(REWARDS[Math.floor(Math.random() * REWARDS.length)]);
+      setReward(rewards[Math.floor(Math.random() * rewards.length)]);
     }, 1000);
   };
 
+  if (isEditing) {
+      return (
+          <div className="flex flex-col h-full w-full max-w-2xl mx-auto p-4">
+              <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-bold dark:text-white">Edit Rewards</h2>
+                  <button onClick={() => setIsEditing(false)} className="text-primary font-bold">Done</button>
+              </div>
+              <div className="flex-1 overflow-y-auto custom-scrollbar space-y-2">
+                  {rewards.map((r, i) => (
+                      <div key={i} className="flex gap-2">
+                          <input 
+                            value={r}
+                            onChange={e => {
+                                const n = [...rewards];
+                                n[i] = e.target.value;
+                                saveRewards(n);
+                            }}
+                            className="flex-1 p-2 rounded border dark:bg-[#1a2b34] dark:border-none dark:text-white"
+                          />
+                          <button onClick={() => saveRewards(rewards.filter((_, idx) => idx !== i))} className="text-red-500"><span className="material-symbols-outlined">delete</span></button>
+                      </div>
+                  ))}
+                  <button onClick={() => saveRewards([...rewards, "New Reward"])} className="w-full py-2 bg-green-500 text-white rounded font-bold mt-4">Add Reward</button>
+              </div>
+          </div>
+      );
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full p-4">
+    <div className="flex flex-col items-center justify-center h-full w-full p-4 relative">
+      <button onClick={() => setIsEditing(true)} className="absolute top-4 right-4 text-slate-400 hover:text-primary"><span className="material-symbols-outlined">edit</span></button>
+
       <div 
         onClick={openBox}
         className={`relative cursor-pointer transition-transform duration-100 ${isShaking ? 'animate-[shake_0.5s_infinite]' : 'hover:scale-105 active:scale-95'}`}

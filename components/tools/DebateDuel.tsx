@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ClassGroup, Student } from '../../types';
 import { getClasses } from '../../utils/db';
@@ -6,8 +7,12 @@ export const DebateDuel: React.FC = () => {
   const [classes, setClasses] = useState<ClassGroup[]>([]);
   const [selectedClassId, setSelectedClassId] = useState<string>('');
   const [speakers, setSpeakers] = useState<[Student | null, Student | null]>([null, null]);
-  const [timer, setTimer] = useState(60); // 60s default
+  
+  const [initialTime, setInitialTime] = useState(60);
+  const [timer, setTimer] = useState(60); 
   const [activeTimer, setActiveTimer] = useState<'left' | 'right' | null>(null);
+  const [autoSwitch, setAutoSwitch] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     getClasses().then(data => {
@@ -20,9 +25,17 @@ export const DebateDuel: React.FC = () => {
     let int: number;
     if (activeTimer && timer > 0) {
       int = window.setInterval(() => setTimer(t => t - 1), 1000);
+    } else if (activeTimer && timer === 0) {
+        // Time is up
+        if (autoSwitch) {
+            setActiveTimer(activeTimer === 'left' ? 'right' : 'left');
+            setTimer(initialTime);
+        } else {
+            setActiveTimer(null);
+        }
     }
     return () => clearInterval(int);
-  }, [activeTimer, timer]);
+  }, [activeTimer, timer, autoSwitch, initialTime]);
 
   const pickSpeakers = () => {
     const currentClass = classes.find(c => c.id === selectedClassId);
@@ -34,7 +47,7 @@ export const DebateDuel: React.FC = () => {
        s2 = currentClass.students[Math.floor(Math.random() * currentClass.students.length)];
     }
     setSpeakers([s1, s2]);
-    setTimer(60);
+    setTimer(initialTime);
     setActiveTimer(null);
   };
 
@@ -42,7 +55,7 @@ export const DebateDuel: React.FC = () => {
 
   return (
     <div className="flex flex-col h-full max-w-5xl mx-auto w-full p-4">
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center items-center gap-4 mb-8">
         <select 
           value={selectedClassId}
           onChange={(e) => setSelectedClassId(e.target.value)}
@@ -50,6 +63,24 @@ export const DebateDuel: React.FC = () => {
         >
           {classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
+        
+        <div className="relative">
+            <button onClick={() => setIsEditing(!isEditing)} className="bg-slate-200 dark:bg-[#233c48] p-2 rounded-lg">
+                <span className="material-symbols-outlined">settings</span>
+            </button>
+            {isEditing && (
+                <div className="absolute top-12 right-0 bg-white dark:bg-[#1a2b34] p-4 rounded-xl shadow-xl border border-slate-200 dark:border-[#233c48] w-64 z-20">
+                    <div className="mb-4">
+                        <label className="text-xs font-bold uppercase text-slate-500">Timer (sec)</label>
+                        <input type="number" value={initialTime} onChange={e => { setInitialTime(Number(e.target.value)); setTimer(Number(e.target.value)); }} className="w-full p-2 border rounded dark:bg-[#111c22] dark:text-white" />
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <input type="checkbox" checked={autoSwitch} onChange={e => setAutoSwitch(e.target.checked)} className="w-5 h-5" />
+                        <span className="text-sm font-bold dark:text-white">Auto-Switch Turn</span>
+                    </div>
+                </div>
+            )}
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col md:flex-row gap-8 items-center justify-center">
@@ -73,8 +104,8 @@ export const DebateDuel: React.FC = () => {
 
         {/* Center Controls */}
         <div className="flex flex-col items-center gap-4">
-           <div className="text-5xl font-mono font-black tabular-nums dark:text-white">{timer}s</div>
-           <button onClick={() => setTimer(60)} className="text-xs font-bold text-slate-500">RESET TIMER</button>
+           <div className={`text-5xl font-mono font-black tabular-nums ${timer === 0 ? 'text-red-500 animate-pulse' : 'dark:text-white'}`}>{timer}s</div>
+           <button onClick={() => setTimer(initialTime)} className="text-xs font-bold text-slate-500">RESET TIMER</button>
            <div className="h-16 w-1 bg-slate-200 dark:bg-[#233c48] hidden md:block"></div>
            <button 
              onClick={pickSpeakers}
