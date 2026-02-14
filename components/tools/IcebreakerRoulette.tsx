@@ -72,7 +72,9 @@ export const IcebreakerRoulette: React.FC = () => {
   };
 
   const removeQuestion = (idx: number) => {
+    if (window.confirm("Are you sure you want to delete this question?")) {
       persistQuestions(questions.filter((_, i) => i !== idx));
+    }
   };
 
   if (customMode) {
