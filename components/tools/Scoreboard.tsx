@@ -39,7 +39,9 @@ export const Scoreboard: React.FC = () => {
 
   const removeTeam = (id: number) => {
     if (teams.length <= 1) return;
-    setTeams(teams.filter(t => t.id !== id));
+    if (window.confirm("Are you sure you want to delete this team?")) {
+      setTeams(teams.filter(t => t.id !== id));
+    }
   };
 
   return (
