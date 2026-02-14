@@ -174,7 +174,7 @@ export const ActiveTool: React.FC<ActiveToolProps> = ({ game, onExit }) => {
   return (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-[#0b1419] animate-[fadeIn_0.3s_ease-out]">
       {/* Tool Header */}
-      <div className="flex items-center justify-between px-4 md:px-8 py-4 bg-white dark:bg-[#111c22] border-b border-slate-200 dark:border-[#233c48] shadow-sm z-10">
+      <div className="flex items-center justify-between px-4 md:px-8 py-4 bg-white dark:bg-[#111c22] border-b border-slate-200 dark:border-[#233c48] shadow-sm z-10 shrink-0">
         <div className="flex items-center gap-3 md:gap-4">
           <div className={`p-2 rounded-lg bg-slate-100 dark:bg-[#1a2b34] ${game.iconColorClass}`}>
             <span className="material-symbols-outlined text-2xl" aria-hidden="true">{game.icon}</span>
@@ -195,8 +195,8 @@ export const ActiveTool: React.FC<ActiveToolProps> = ({ game, onExit }) => {
         </button>
       </div>
 
-      {/* Tool Content Area */}
-      <div className="flex-1 overflow-hidden p-4 md:p-8 relative">
+      {/* Tool Content Area - Scrollable */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8 relative">
         {renderTool()}
       </div>
     </div>
