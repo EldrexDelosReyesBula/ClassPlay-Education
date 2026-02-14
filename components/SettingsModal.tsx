@@ -5,9 +5,16 @@ import { exportBackup, importBackup } from '../utils/db';
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  analyticsEnabled: boolean;
+  onAnalyticsChange: (enabled: boolean) => void;
 }
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
+export const SettingsModal: React.FC<SettingsModalProps> = ({ 
+  isOpen, 
+  onClose,
+  analyticsEnabled,
+  onAnalyticsChange
+}) => {
   const [theme, setTheme] = useState('dark');
   const [sound, setSound] = useState(true);
   const [message, setMessage] = useState('');
@@ -88,26 +95,51 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             </div>
           </div>
 
-          {/* Sound */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-               <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
-                 <span className="material-symbols-outlined">volume_up</span>
-               </div>
-               <div>
-                 <p className="font-bold dark:text-white">Sound Effects</p>
-                 <p className="text-xs text-slate-500">Enable audio cues</p>
-               </div>
-            </div>
-            <button 
-              onClick={() => setSound(!sound)}
-              className={`w-12 h-6 rounded-full transition-colors relative ${sound ? 'bg-primary' : 'bg-slate-300 dark:bg-[#233c48]'}`}
-            >
-              <div className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform ${sound ? 'translate-x-6' : ''}`} />
-            </button>
+          {/* Preferences */}
+          <div>
+             <label className="block text-sm font-bold text-slate-500 mb-3 uppercase tracking-wider">Preferences</label>
+             <div className="space-y-4">
+                {/* Sound */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                     <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
+                       <span className="material-symbols-outlined">volume_up</span>
+                     </div>
+                     <div>
+                       <p className="font-bold dark:text-white">Sound Effects</p>
+                       <p className="text-xs text-slate-500">Enable audio cues</p>
+                     </div>
+                  </div>
+                  <button 
+                    onClick={() => setSound(!sound)}
+                    className={`w-12 h-6 rounded-full transition-colors relative ${sound ? 'bg-primary' : 'bg-slate-300 dark:bg-[#233c48]'}`}
+                  >
+                    <div className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform ${sound ? 'translate-x-6' : ''}`} />
+                  </button>
+                </div>
+
+                {/* Analytics Toggle */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                     <div className="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
+                       <span className="material-symbols-outlined">insights</span>
+                     </div>
+                     <div>
+                       <p className="font-bold dark:text-white">Analytics</p>
+                       <p className="text-xs text-slate-500">Allow anonymous usage data</p>
+                     </div>
+                  </div>
+                  <button 
+                    onClick={() => onAnalyticsChange(!analyticsEnabled)}
+                    className={`w-12 h-6 rounded-full transition-colors relative ${analyticsEnabled ? 'bg-primary' : 'bg-slate-300 dark:bg-[#233c48]'}`}
+                  >
+                    <div className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform ${analyticsEnabled ? 'translate-x-6' : ''}`} />
+                  </button>
+                </div>
+             </div>
           </div>
 
-          {/* Donation (Added) */}
+          {/* Donation */}
           <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/10 dark:to-rose-900/10 p-4 rounded-xl border border-pink-100 dark:border-pink-900/30">
              <div className="flex items-center gap-3 mb-3">
                 <span className="material-symbols-outlined text-pink-500">volunteer_activism</span>
