@@ -114,6 +114,12 @@ export const ClassManager: React.FC<ClassManagerProps> = ({ onClose }) => {
     setStudents(prev => prev.map(s => s.id === id ? { ...s, skillLevel: skill } : s));
   };
 
+  const handleRemoveStudent = (id: string) => {
+    if (window.confirm("Are you sure you want to remove this student?")) {
+      setStudents(prev => prev.filter(s => s.id !== id));
+    }
+  };
+
   const handleSaveClass = async () => {
     if (!className.trim()) {
       alert("Please enter a class name");
@@ -138,7 +144,7 @@ export const ClassManager: React.FC<ClassManagerProps> = ({ onClose }) => {
   };
 
   const handleDeleteClass = async (id: string) => {
-    if (confirm('Are you sure you want to delete this class?')) {
+    if (window.confirm('Are you sure you want to delete this class? This action cannot be undone.')) {
       await deleteClass(id);
       loadClasses();
     }
@@ -368,7 +374,7 @@ export const ClassManager: React.FC<ClassManagerProps> = ({ onClose }) => {
                             </td>
                             <td className="px-4 py-3 text-right">
                               <button 
-                                onClick={() => setStudents(prev => prev.filter(s => s.id !== student.id))}
+                                onClick={() => handleRemoveStudent(student.id)}
                                 className="text-slate-400 hover:text-red-500"
                               >
                                 <span className="material-symbols-outlined text-lg">close</span>
