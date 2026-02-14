@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Analytics } from "@vercel/analytics/react";
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { HeroCard } from './components/HeroCard';
@@ -10,6 +11,7 @@ import { SettingsModal } from './components/SettingsModal';
 import { ActiveTool } from './components/ActiveTool';
 import { Onboarding } from './components/Onboarding';
 import { DonationSheet } from './components/DonationSheet';
+import { ConsentBanner } from './components/ConsentBanner';
 import { PrivacyPolicy, TermsOfService, AboutPage } from './components/InfoPages';
 import { GAMES, HERO_GAMES } from './constants';
 import { Game, HeroGame } from './types';
@@ -20,6 +22,7 @@ const DAYS_THRESHOLD = 5;
 const KEY_GAME_COUNT = 'classplay_game_count';
 const KEY_LAST_PROMPT = 'classplay_last_donation_prompt';
 const KEY_ONBOARDING = 'classplay_onboarding_done';
+const KEY_ANALYTICS_CONSENT = 'classplay_analytics_consent';
 
 const App: React.FC = () => {
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
@@ -35,6 +38,9 @@ const App: React.FC = () => {
   // Feature State
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showDonation, setShowDonation] = useState(false);
+  
+  // Analytics State: null = not asked, true = allow, false = deny
+  const [analyticsConsent, setAnalyticsConsent] = useState<boolean | null>(null);
 
   // Search and Filter State
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,6 +57,12 @@ const App: React.FC = () => {
     if (!hasSeenOnboarding) {
       setShowOnboarding(true);
     }
+
+    // Check Analytics Consent
+    const storedConsent = localStorage.getItem(KEY_ANALYTICS_CONSENT);
+    if (storedConsent === 'true') setAnalyticsConsent(true);
+    else if (storedConsent === 'false') setAnalyticsConsent(false);
+    // else remains null, showing banner
 
     // Check Passive Donation Logic (Days elapsed)
     checkDonationStatus();
@@ -91,6 +103,11 @@ const App: React.FC = () => {
   const handleCompleteOnboarding = () => {
     localStorage.setItem(KEY_ONBOARDING, 'true');
     setShowOnboarding(false);
+  };
+
+  const setConsent = (choice: boolean) => {
+    setAnalyticsConsent(choice);
+    localStorage.setItem(KEY_ANALYTICS_CONSENT, choice.toString());
   };
 
   // Helper to find game object by ID (checking both lists)
@@ -232,6 +249,9 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-screen overflow-hidden font-display relative">
+      {/* Vercel Analytics - Conditionally Rendered based on Consent */}
+      {analyticsConsent && <Analytics />}
+
       <Sidebar 
         onOpenClassManager={() => setIsClassManagerOpen(true)}
         isOpen={isSidebarOpen}
@@ -260,6 +280,8 @@ const App: React.FC = () => {
       <SettingsModal 
         isOpen={isSettingsOpen} 
         onClose={() => setIsSettingsOpen(false)} 
+        analyticsEnabled={analyticsConsent === true}
+        onAnalyticsChange={setConsent}
       />
 
       {isClassManagerOpen && (
@@ -268,6 +290,15 @@ const App: React.FC = () => {
 
       {/* Feature Overlays */}
       {showOnboarding && <Onboarding onComplete={handleCompleteOnboarding} />}
+      
+      {/* Show Consent Banner if not decided and not in onboarding */}
+      {analyticsConsent === null && !showOnboarding && (
+        <ConsentBanner 
+          onAccept={() => setConsent(true)} 
+          onDecline={() => setConsent(false)} 
+        />
+      )}
+
       <DonationSheet isOpen={showDonation} onDismiss={handleDismissDonation} />
     </div>
   );
