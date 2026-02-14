@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface HeaderProps {
@@ -19,19 +20,21 @@ export const Header: React.FC<HeaderProps> = ({
         <button 
           onClick={onMenuClick}
           className="md:hidden p-2 -ml-2 text-slate-600 dark:text-white"
-          aria-label="Open Menu"
+          aria-label="Open Navigation Menu"
         >
           <span className="material-symbols-outlined">menu</span>
         </button>
         
         <div className="relative w-full max-w-xl">
-          <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#92b7c9]">
+          <label htmlFor="game-search" className="sr-only">Search games</label>
+          <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-[#92b7c9]" aria-hidden="true">
             search
           </span>
           <input
+            id="game-search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-11 pl-12 pr-4 rounded-xl border-none bg-slate-200/50 dark:bg-[#233c48] text-slate-900 dark:text-white placeholder:text-[#92b7c9] focus:ring-2 focus:ring-primary transition-all outline-none"
+            className="w-full h-11 pl-12 pr-4 rounded-xl border-none bg-slate-200/50 dark:bg-[#233c48] text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-[#92b7c9] focus:ring-2 focus:ring-primary transition-all outline-none"
             placeholder="Search games..."
             type="text"
           />
@@ -40,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="flex items-center gap-4 ml-4">
         <button 
           onClick={onSettingsClick}
-          className="flex items-center justify-center size-11 rounded-xl bg-white dark:bg-[#233c48] text-slate-600 dark:text-white border border-slate-200 dark:border-none shadow-sm hover:bg-slate-50 dark:hover:brightness-110 transition-all"
+          className="flex items-center justify-center size-11 rounded-xl bg-white dark:bg-[#233c48] text-slate-600 dark:text-white border border-slate-200 dark:border-none shadow-sm hover:bg-slate-50 dark:hover:brightness-110 transition-all focus:outline-none focus:ring-2 focus:ring-primary"
           aria-label="Open Settings"
         >
           <span className="material-symbols-outlined">settings</span>

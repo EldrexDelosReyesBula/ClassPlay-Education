@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Game } from '../types';
 // Existing
@@ -43,6 +44,7 @@ import { VirtualBadge } from './tools/VirtualBadge';
 import { QuickQuiz } from './tools/QuickQuiz';
 import { RankVote } from './tools/RankVote';
 import { ReflectionCards } from './tools/ReflectionCards';
+import { PebbleToss } from './tools/PebbleToss';
 
 // New Imports
 import { MathRelay } from './tools/math/MathRelay';
@@ -111,6 +113,7 @@ export const ActiveTool: React.FC<ActiveToolProps> = ({ game, onExit }) => {
       case 'wheel-spin': return <WheelSpin />;
       case 'mystery-box': return <MysteryBox />;
       case 'probability-quiz': return <ProbabilityQuiz />;
+      case 'pebble-toss': return <PebbleToss />;
 
       // Speaking
       case 'debate-duel': return <DebateDuel />;
